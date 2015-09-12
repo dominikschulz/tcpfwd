@@ -45,9 +45,10 @@ func loadConfiguration(cfgFile string) TcpfwdConfig {
 		log.Panic("Could not load config file", err)
 	}
 
+	// WONT implement:
+	// - allow/denty filter -> use iptables
+	// - rate limiting -> use iptables
 	// TODO pending implementation:
-	// - allow/deny filter CIDR
-	// - rate limiting
 	// - graphite support
 	// populate Netmasks
 	// cfg.parseNetworks()
@@ -64,7 +65,7 @@ func main() {
 	config := loadConfiguration("conf/tcpfwd.yaml")
 
 	for k, v := range config.Listen {
-		go listen(k, v.Local, v.Remote)
+		go tryListen(k, v.Local, v.Remote, true)
 	}
 
 	log.Printf("Started all listeners")
