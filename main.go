@@ -99,7 +99,7 @@ func main() {
 	}()
 
 	for k, v := range config.Listen {
-		go tryListen(k, v.Local, v.Remote, true)
+		go fwd.TryListen(k, v.Local, v.Remote, true)
 	}
 
 	log.Printf("Started all listeners")
