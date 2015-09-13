@@ -22,6 +22,14 @@ type Forwarder struct {
 	listeners map[string]*Listener
 }
 
+func NewForwarder() *Forwarder {
+	f := &Forwarder{
+		mutex:     &sync.Mutex{},
+		listeners: make(map[string]*Listener, 10),
+	}
+	return f
+}
+
 func (f *Forwarder) TryListen(name string, localAddr string, remoteAddr string, retry bool) {
 	f.mutex.Lock()
 	if l, found := f.listeners[name]; found {
