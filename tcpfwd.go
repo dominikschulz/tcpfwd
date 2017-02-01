@@ -61,6 +61,8 @@ func forward(name string, local net.Conn, remoteAddr string) {
 	var bytesOut int64
 
 	defer func() {
+		Bytes.WithLabelValues(name, "in").Add(float64(bytesIn))
+		Bytes.WithLabelValues(name, "out").Add(float64(bytesOut))
 		log.Printf("[%s] Connection from %s finished after %s (In: %d, Out: %d)", name, sourceAddr, time.Since(t0), bytesIn, bytesOut)
 	}()
 
@@ -83,6 +85,7 @@ func forward(name string, local net.Conn, remoteAddr string) {
 	go doCopy(local, remote, d1, &bytesOut)
 	go doCopy(remote, local, d2, &bytesIn)
 
+	Conns.WithLabelValues(name).Inc()
 	// wait until both directions are finished
 	<-d1
 	<-d2

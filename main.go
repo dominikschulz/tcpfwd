@@ -3,11 +3,15 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"gopkg.in/yaml.v1"
+	"jus.tw.cx/jw-business-api/lib/logger"
+
+	"github.com/ghodss/yaml"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 const defaultConfig = `
@@ -15,12 +19,13 @@ listen:
 `
 
 type TcpfwdConfig struct {
-	Listen map[string]ListenConfig `yaml:"listen"`
+	Metrics string                  `json:"metrics"`
+	Listen  map[string]ListenConfig `json:"listen"`
 }
 
 type ListenConfig struct {
-	Local  string `yaml:"local"`
-	Remote string `yaml:"remote"`
+	Local  string `json:"local"`
+	Remote string `json:"remote"`
 }
 
 func loadConfiguration(cfgFile string) TcpfwdConfig {
@@ -48,21 +53,47 @@ func loadConfiguration(cfgFile string) TcpfwdConfig {
 	// WONT implement:
 	// - allow/denty filter -> use iptables
 	// - rate limiting -> use iptables
-	// TODO pending implementation:
-	// - graphite support
-	// populate Netmasks
-	// cfg.parseNetworks()
-	// if len(cfg.Graphite.Prefix) < 1 {
-	// 	cfg.Graphite.Prefix = "tcpfwd"
-	// }
-	// if cfg.Graphite.Interval < 1 {
-	// 	cfg.Graphite.Interval = 60
-	// }
 
 	return cfg
 }
+
+var (
+	Conns *prometheus.CounterVec
+	Bytes *prometheus.CounterVec
+)
+
+func init() {
+	Conns = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "tcp_connections_total",
+			Help: "Number of TCP Connections established",
+		},
+		[]string{"name"},
+	)
+	prometheus.Register(Conns)
+	Bytes = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "tcp_bytes_total",
+			Help: "Number of bytes transfered",
+		},
+		[]string{"name", "direction"},
+	)
+	prometheus.Register(Bytes)
+}
+
 func main() {
 	config := loadConfiguration("conf/tcpfwd.yaml")
+
+	go func() {
+		http.Handle("/metrics", prometheus.Handler())
+		http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+			http.Error(w, "OK", http.StatusOK)
+		})
+		http.HandleFunc("/", http.NotFound)
+		if err := http.ListenAndServe(config.Metrics, nil); err != nil {
+			logger.Log("level", "error", "msg", "Failed to listen on management port", "err", err)
+		}
+	}()
 
 	for k, v := range config.Listen {
 		go tryListen(k, v.Local, v.Remote, true)
