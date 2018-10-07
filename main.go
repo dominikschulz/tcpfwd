@@ -8,8 +8,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"jus.tw.cx/jw-business-api/lib/logger"
-
 	"github.com/ghodss/yaml"
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -91,7 +89,7 @@ func main() {
 		})
 		http.HandleFunc("/", http.NotFound)
 		if err := http.ListenAndServe(config.Metrics, nil); err != nil {
-			logger.Log("level", "error", "msg", "Failed to listen on management port", "err", err)
+			log.Printf("Failed to listen on management port: %s", err)
 		}
 	}()
 

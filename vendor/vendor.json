@@ -15,38 +15,10 @@
 			"revisionTime": "2016-12-07T00:33:20Z"
 		},
 		{
-			"checksumSHA1": "7Ta13bcuAlF1esPxSPljmpsSUwc=",
-			"origin": "jus.tw.cx/jw-business-api/vendor/github.com/go-kit/kit/log",
-			"path": "github.com/go-kit/kit/log",
-			"revision": "f7ee7c780b2e3443bcf92a4c868e772f7909addb",
-			"revisionTime": "2016-12-14T17:39:59Z"
-		},
-		{
-			"checksumSHA1": "+xn4YEmUV6SSxFKMro2JKs63F0A=",
-			"origin": "jus.tw.cx/jw-business-api/vendor/github.com/go-logfmt/logfmt",
-			"path": "github.com/go-logfmt/logfmt",
-			"revision": "f7ee7c780b2e3443bcf92a4c868e772f7909addb",
-			"revisionTime": "2016-12-14T17:39:59Z"
-		},
-		{
-			"checksumSHA1": "2sj/DbXoXdnPAfjAEyhS0Jj5QL0=",
-			"origin": "jus.tw.cx/jw-business-api/vendor/github.com/go-stack/stack",
-			"path": "github.com/go-stack/stack",
-			"revision": "f7ee7c780b2e3443bcf92a4c868e772f7909addb",
-			"revisionTime": "2016-12-14T17:39:59Z"
-		},
-		{
 			"checksumSHA1": "kBeNcaKk56FguvPSUCEaH6AxpRc=",
 			"path": "github.com/golang/protobuf/proto",
 			"revision": "8ee79997227bf9b34611aee7946ae64735e6fd93",
 			"revisionTime": "2016-11-17T03:31:26Z"
-		},
-		{
-			"checksumSHA1": "abKzFXAn0KDr5U+JON1ZgJ2lUtU=",
-			"origin": "jus.tw.cx/jw-business-api/vendor/github.com/kr/logfmt",
-			"path": "github.com/kr/logfmt",
-			"revision": "f7ee7c780b2e3443bcf92a4c868e772f7909addb",
-			"revisionTime": "2016-12-14T17:39:59Z"
 		},
 		{
 			"checksumSHA1": "bKMZjd2wPw13VwoE7mBeSv5djFA=",
@@ -95,12 +67,6 @@
 			"path": "gopkg.in/yaml.v2",
 			"revision": "a5b47d31c556af34a302ce5d659e6fea44d90de0",
 			"revisionTime": "2016-09-28T15:37:09Z"
-		},
-		{
-			"checksumSHA1": "xIYnxDPeEW5bjDu/DFWR5cuAgRs=",
-			"path": "jus.tw.cx/jw-business-api/lib/logger",
-			"revision": "f7ee7c780b2e3443bcf92a4c868e772f7909addb",
-			"revisionTime": "2016-12-14T17:39:59Z"
 		}
 	],
 	"rootPath": "github.com/dominikschulz/tcpfwd"
