@@ -15,6 +15,7 @@ import (
 const defaultConfig = `
 listen:
 `
+const defaultConfigLocation = "conf/tcpfwd.yaml"
 
 type TcpfwdConfig struct {
 	Metrics string                  `json:"metrics"`
@@ -80,7 +81,11 @@ func init() {
 }
 
 func main() {
-	config := loadConfiguration("conf/tcpfwd.yaml")
+	cfgLoc := defaultConfigLocation
+	if c := os.Getenv("CONFIG"); c != "" {
+		cfgLoc = c
+	}
+	config := loadConfiguration(cfgLoc)
 
 	go func() {
 		http.Handle("/metrics", prometheus.Handler())
