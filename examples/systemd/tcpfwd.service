@@ -1,0 +1,10 @@
+[Unit]
+Description=Tcp Forwarder
+
+[Service]
+User=root
+Environment=CONFIG=/etc/tcpfwd.yaml
+ExecStart=/usr/local/sbin/tcpfwd
+
+[Install]
+WantedBy=multi-user.target
